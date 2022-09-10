@@ -9,7 +9,7 @@ class QuizHandler extends SimpleRest{
 
     function createQuiz( $questions, $answers, $correct_index, $explanation){
         
-        return $this->get_returnData($this->quiz->create( $questions, $answers, $correct_index, $explanation));
+        return $this->get_returnData($this->quiz->create($questions, $answers, $correct_index, $explanation));
     }
 
     function getQuiz(string $quiz_id){
