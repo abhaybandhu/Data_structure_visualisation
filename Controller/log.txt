@@ -1,0 +1,30 @@
+array(2) {
+  [0]=>
+  array(4) {
+    [0]=>
+    string(5) "ans1 "
+    [1]=>
+    string(4) "ans2"
+    [2]=>
+    string(4) "ans3"
+    [3]=>
+    string(4) "ans3"
+  }
+  [1]=>
+  array(4) {
+    [0]=>
+    string(5) "Ans 1"
+    [1]=>
+    string(5) "Ans 2"
+    [2]=>
+    string(5) "Ans 3"
+    [3]=>
+    string(5) "Ans 4"
+  }
+}
+array(2) {
+  [0]=>
+  string(10) "Question 1"
+  [1]=>
+  string(6) "Quiz 2"
+}

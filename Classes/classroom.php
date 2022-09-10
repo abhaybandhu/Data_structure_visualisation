@@ -15,7 +15,41 @@ class Classroom extends CommonFunction{
         $this->className= $className;
         $this->user= new User($user_id);
     }
+    function getCreatedClass(){
+        $returnObj = new ReturnData();
+        $returnObj->perform = false;
 
+        $searchQuery = [
+            'teacher_id'  => new ObjectId($this->user->getId()),
+        ];
+
+        $project=["teacher_id"=>0];
+
+        $data = null;
+        try{
+            $db = new DataBase();
+            $data =$db->projection(DbTable::Classroom, $searchQuery, $project, true);
+    
+            $returnObj->perform = true;
+            $Class =array();
+
+            foreach($data as $class){
+
+                $obj=[
+                    '_id'=> (string)$class->code,
+                    'classroom_name'=> $class->classroom_name,
+                    'class_id'=> (string)$class->_id,
+                ];
+                array_push($Class, $obj);
+            }
+        
+            $returnObj->data = $Class;
+        }catch(Exception $ex){
+            $returnObj->error = $ex->getMessage();
+        }
+
+        return $returnObj;
+    }
     function Create():ReturnData{
         $this->user->getUserDetails(['type' =>1]);
         $returnObj = new ReturnData();
@@ -46,7 +80,30 @@ class Classroom extends CommonFunction{
         }
         return $returnObj;// return  the code of the classroom in data attribute
     }
+    function createClassPost(String $title, String $description, String $quiz, String $userid, String $class_id){
+        $returnObj = new ReturnData();
+        $returnObj->perform = false;
 
+        $newdata = [
+            'title'=> $title,
+            'description'=> $description,
+            'quiz'=> $quiz,
+            'postedDate' => new MongoDB\BSON\Timestamp(1,time()),
+            'class_id'  => new ObjectId($class_id),
+            'user_id'  => new ObjectId($class_id),
+        ];
+        
+        $data = null;
+        try{
+            $db = new DataBase();
+            $data =$db->insert(DbTable::ClassPost, $newdata);
+            $returnObj->perform = true;
+        }catch(Exception $ex){
+            $returnObj->error = $ex->getMessage();
+        }
+
+        return $returnObj;
+    }
     function GetClassPost(String $class_id){
         $returnObj = new ReturnData();
         $returnObj->perform = false;
@@ -67,13 +124,12 @@ class Classroom extends CommonFunction{
 
             foreach($data as $post){
 
-                $count++;
                 $obj=[
                     '_id'=> (string)$post['_id'],
                     'title'=>$post['title'],
                     'description'=>$post['description'],
                     'quiz'=>($post['quiz']=='NULL')? False:(string)$post['quiz'],
-                    'postedDate'=>date("d/m/Y H:i:s",(int)$post['postedDate']),
+                    'postedDate'=>date("d/m/Y H:i:s",(int)$post['postedDate']->getTimestamp()),
                 ];
                 array_push($Posts, $obj);
             }
@@ -159,7 +215,7 @@ class Classroom extends CommonFunction{
         foreach($classes as $class){
             // $count++;
             $objClass = [
-                '_id'=> (string)$class->_id,
+                '_id'=> (string)$class->code,
                 'classroom_name'=> $class->classroom_name,
                 'class_id'=> (string)$class->class_id,
                 'teacher_id'=> (string)$class->teacher_id,

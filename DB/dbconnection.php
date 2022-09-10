@@ -19,7 +19,7 @@ abstract class DbTable{
 }
 
 class DataBase{
-    public $client, $database, $user;
+    public $client, $database, $user, $insertion;
     
     function __construct(){
         $this->client = new MongoDB\Client(
@@ -39,10 +39,20 @@ class DataBase{
         
     }
 
-    public function insert(int $Table, array $data){
+    public function insert(int $Table, array $data, bool $return = false){
         $collection = $this->fetchTable($Table);
-        $collection->insertOne($data);
+        $this->insertion =$collection->insertOne($data);
     }
+
+    public function getInsertedId(){
+        return (string) $this->insertion->getInsertedId();
+    }
+    public function insertMany(int $Table, array $data){
+        $collection = $this->fetchTable($Table);
+        $collection->insertMany($data);
+    }
+
+
 
     public function findOne(int $Table, array $data): ?object{
         $collection = $this->fetchTable($Table);

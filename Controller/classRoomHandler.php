@@ -15,4 +15,23 @@ class ClassRoomHandler extends SimpleRest{
     function getPost($id){
         return $this->get_returnData($this->classroom->GetClassPost($id));
     }
+    function getCreateClass(){
+        return $this->get_returnData($this->classroom->getCreatedClass());
+
+    }
+    function createClass(String $classname, String $user_id){
+        $this->classroom = new Classroom("",$classname,$user_id);
+        return $this->get_returnData($this->classroom->Create());
+    }
+
+    function postClass(String $title, String $description, String $quiz, String $userid, String $class_id){
+
+        return $this->get_returnData($this->classroom->createClassPost( $title,  $description,  $quiz,  $userid,  $class_id));
+
+    }
+
+    function getQuiz(string $quiz_id){
+        return $this->get_returnData($this->classroom->getQuiz($quiz_id));
+
+    }
 }
