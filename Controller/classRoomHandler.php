@@ -30,8 +30,5 @@ class ClassRoomHandler extends SimpleRest{
 
     }
 
-    function getQuiz(string $quiz_id){
-        return $this->get_returnData($this->classroom->getQuiz($quiz_id));
-
-    }
+    
 }

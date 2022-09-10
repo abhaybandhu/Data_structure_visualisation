@@ -12,6 +12,10 @@ class QuizHandler extends SimpleRest{
         return $this->get_returnData($this->quiz->create( $questions, $answers, $correct_index, $explanation));
     }
 
+    function getQuiz(string $quiz_id){
+        return $this->get_returnData($this->quiz->getQuiz($quiz_id));
+    }
+
 
 
 }
